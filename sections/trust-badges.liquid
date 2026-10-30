@@ -1,0 +1,106 @@
+<div class="trust-badges">
+  <div class="container">
+    <div class="trust-badges__grid">
+      <div class="trust-badge">
+        <div class="trust-badge__icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+          </svg>
+        </div>
+        <p class="trust-badge__title">{{ section.settings.badge1_title }}</p>
+        <p class="trust-badge__text">{{ section.settings.badge1_text }}</p>
+      </div>
+
+      <div class="trust-badge">
+        <div class="trust-badge__icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+          </svg>
+        </div>
+        <p class="trust-badge__title">{{ section.settings.badge2_title }}</p>
+        <p class="trust-badge__text">{{ section.settings.badge2_text }}</p>
+      </div>
+
+      <div class="trust-badge">
+        <div class="trust-badge__icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <p class="trust-badge__title">{{ section.settings.badge3_title }}</p>
+        <p class="trust-badge__text">{{ section.settings.badge3_text }}</p>
+      </div>
+
+      <div class="trust-badge">
+        <div class="trust-badge__icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <p class="trust-badge__title">{{ section.settings.badge4_title }}</p>
+        <p class="trust-badge__text">{{ section.settings.badge4_text }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust badges",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge1_title",
+      "label": "Badge 1 title",
+      "default": "White-Glove Shipping"
+    },
+    {
+      "type": "text",
+      "id": "badge1_text",
+      "label": "Badge 1 text",
+      "default": "Free on all mirrors and frames"
+    },
+    {
+      "type": "text",
+      "id": "badge2_title",
+      "label": "Badge 2 title",
+      "default": "Lifetime Warranty"
+    },
+    {
+      "type": "text",
+      "id": "badge2_text",
+      "label": "Badge 2 text",
+      "default": "Guaranteed craftsmanship"
+    },
+    {
+      "type": "text",
+      "id": "badge3_title",
+      "label": "Badge 3 title",
+      "default": "Secure Checkout"
+    },
+    {
+      "type": "text",
+      "id": "badge3_text",
+      "label": "Badge 3 text",
+      "default": "Shop with confidence"
+    },
+    {
+      "type": "text",
+      "id": "badge4_title",
+      "label": "Badge 4 title",
+      "default": "Expert Craftsmanship"
+    },
+    {
+      "type": "text",
+      "id": "badge4_text",
+      "label": "Badge 4 text",
+      "default": "Hand-finished, made to order"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust badges"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,124 @@
+<header class="site-header">
+  <div class="container">
+    <div class="site-header__logo">
+      <a href="{{ routes.root_url }}">
+        {%- if section.settings.logo -%}
+          <img src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name }}" width="200">
+        {%- else -%}
+          <span class="site-header__wordmark">{{ shop.name }}</span>
+          <span class="site-header__ornament" aria-hidden="true"></span>
+          {%- if section.settings.tagline != blank -%}
+            <span class="site-header__tagline">{{ section.settings.tagline }}</span>
+          {%- endif -%}
+        {%- endif -%}
+      </a>
+    </div>
+
+    <nav class="site-nav-wrapper" aria-label="Main navigation">
+      <ul class="site-nav">
+        {%- for link in linklists[section.settings.menu].links -%}
+          {%- if link.links.size > 0 -%}
+            <li class="site-nav__item site-nav__item--dropdown">
+              <a href="{{ link.url }}">{{ link.title }}</a>
+              <ul class="site-nav__dropdown">
+                {%- for child_link in link.links -%}
+                  <li><a href="{{ child_link.url }}">{{ child_link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </li>
+          {%- else -%}
+            <li class="site-nav__item"><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="site-header__icons">
+      <a href="{{ routes.cart_url }}" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="cart-count">&nbsp;({{ cart.item_count }})</span>
+        {%- endif -%}
+      </a>
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_url | default: routes.all_products_collection_url }}" class="btn btn--accent btn--small site-header__cta">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="9" x2="23" y2="9"/><line x1="3" y1="17" x2="23" y2="17"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile nav drawer -->
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true" aria-label="Mobile navigation">
+  <div class="mobile-nav__header">
+    <span class="mobile-nav__logo">{{ shop.name }}</span>
+    <button class="mobile-nav__close" id="nav-close" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <ul class="mobile-nav__links">
+    {%- for link in linklists[section.settings.menu].links -%}
+      <li>
+        <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- if link.links.size > 0 -%}
+          <ul class="mobile-nav__sublinks">
+            {%- for child_link in link.links -%}
+              <li><a href="{{ child_link.url }}">{{ child_link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+
+  <div class="mobile-nav__footer">
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_url | default: routes.all_products_collection_url }}" class="btn btn--accent btn--full">{{ section.settings.button_label }}</a>
+    {%- endif -%}
+    <a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
+  </div>
+</div>
+
+<div class="nav-backdrop" id="nav-backdrop"></div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image",
+      "info": "Leave blank to use the store name with the tagline below."
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Logo tagline",
+      "default": "Art framing & mirrors"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Header button label",
+      "default": "Explore"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Header button link"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,191 @@
+{%- assign occasions = section.blocks | where: 'type', 'occasion' -%}
+
+<section class="hero" data-hero-rotator data-interval="{{ section.settings.interval | times: 1000 }}">
+  <div class="container">
+    <div class="hero__inner">
+      <div class="hero__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="hero__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank or section.settings.title_accent != blank -%}
+          <h1 class="hero__title">
+            {{- section.settings.title -}}
+            {%- if section.settings.title_accent != blank -%}
+              <em class="hero__title-accent">{{ section.settings.title_accent }}</em>
+            {%- endif -%}
+          </h1>
+        {%- endif -%}
+
+        {%- if occasions.size > 0 -%}
+          <p class="hero__occasion">
+            <span class="hero__stack">
+              {%- for block in occasions -%}
+                <span class="hero__occasion-item{% if forloop.first %} is-active{% endif %}"
+                      data-hero-slide="{{ forloop.index0 }}"
+                      {% unless forloop.first %}aria-hidden="true"{% endunless %}
+                      {{ block.shopify_attributes }}>{{ block.settings.occasion }}</span>
+              {%- endfor -%}
+            </span>
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="hero__subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank or section.settings.link_label != blank -%}
+          <div class="hero__actions">
+            {%- if section.settings.button_label != blank -%}
+              <a href="{{ section.settings.button_url | default: routes.all_products_collection_url }}" class="btn btn--dark">
+                {{ section.settings.button_label }}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.link_label != blank -%}
+              <a href="{{ section.settings.link_url | default: routes.all_products_collection_url }}" class="hero__link">
+                {{ section.settings.link_label }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <figure class="hero__media">
+        <div class="hero__image">
+          {%- for block in occasions -%}
+            <div class="hero__slide-image{% if forloop.first %} is-active{% endif %}"
+                 data-hero-slide="{{ forloop.index0 }}"
+                 {% unless forloop.first %}aria-hidden="true"{% endunless %}>
+              {%- if block.settings.image -%}
+                <img src="{{ block.settings.image | image_url: width: 1000 }}"
+                     srcset="{{ block.settings.image | image_url: width: 500 }} 500w, {{ block.settings.image | image_url: width: 1000 }} 1000w"
+                     sizes="(max-width: 768px) 100vw, 420px"
+                     alt="{{ block.settings.image.alt | default: block.settings.occasion | escape }}"
+                     width="1000" height="{{ 1000 | divided_by: block.settings.image.aspect_ratio | round }}"
+                     loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+              {%- else -%}
+                <div class="hero__placeholder">[{{ block.settings.occasion }} frame photo]</div>
+              {%- endif -%}
+            </div>
+          {%- else -%}
+            <div class="hero__slide-image is-active">
+              <div class="hero__placeholder">[Hero frame photo]</div>
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if occasions.size > 0 -%}
+          <figcaption class="hero__caption">
+            <span class="hero__stack">
+              {%- for block in occasions -%}
+                <span class="hero__caption-item{% if forloop.first %} is-active{% endif %}"
+                      data-hero-slide="{{ forloop.index0 }}"
+                      {% unless forloop.first %}aria-hidden="true"{% endunless %}>{{ block.settings.occasion }}</span>
+              {%- endfor -%}
+            </span>
+          </figcaption>
+        {%- endif -%}
+      </figure>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero banner",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Custom framing since 1996"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Preserving what"
+    },
+    {
+      "type": "text",
+      "id": "title_accent",
+      "label": "Heading accent line",
+      "info": "Shown on its own line in italic accent color.",
+      "default": "remains human."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Hand-built frames and mirrors for the moments you can’t replace — designed with you, finished in our shop, delivered ready to hang."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Explore"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Secondary link label",
+      "default": "View the gallery"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Secondary link"
+    },
+    {
+      "type": "header",
+      "content": "Occasions"
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Time per occasion",
+      "min": 1.5,
+      "max": 10,
+      "step": 0.5,
+      "unit": "s",
+      "default": 2.5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "occasion",
+      "name": "Occasion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "occasion",
+          "label": "Occasion",
+          "default": "Birthdays"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Portrait images work best (about 4:5)."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero banner",
+      "blocks": [
+        { "type": "occasion", "settings": { "occasion": "Birthdays" } },
+        { "type": "occasion", "settings": { "occasion": "Weddings" } },
+        { "type": "occasion", "settings": { "occasion": "Anniversaries" } },
+        { "type": "occasion", "settings": { "occasion": "Graduations" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

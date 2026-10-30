@@ -1,0 +1,23 @@
+<section class="section">
+  <div class="container" style="max-width:800px;">
+    <p style="color:#888;font-size:0.85rem;margin-bottom:0.5rem;">{{ article.published_at | date: '%B %d, %Y' }}</p>
+    <h1 class="page-header__title">{{ article.title }}</h1>
+    <p style="color:#888;margin-bottom:2rem;">{{ 'blogs.article.by_author' | t: author: article.author }}</p>
+
+    {%- if article.image -%}
+      <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.image.alt | escape }}" style="margin-bottom:2rem;" width="1200">
+    {%- endif -%}
+
+    <div class="rte">{{ article.content }}</div>
+
+    <div style="margin-top:2.5rem;">
+      <a href="{{ blog.url }}">&larr; Back to {{ blog.title }}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Article"
+}
+{% endschema %}

@@ -1,0 +1,167 @@
+<!-- Sticky buy bar — floating pill, appears when add-to-cart scrolls out of view -->
+<div class="sticky-buy-bar" id="sticky-buy-bar" aria-hidden="true">
+  <div class="sticky-buy-bar__inner">
+    <div class="sticky-buy-bar__info">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 96 }}"
+             alt="{{ product.title | escape }}"
+             class="sticky-buy-bar__img" width="96">
+      {%- endif -%}
+      <div class="sticky-buy-bar__text">
+        <p class="sticky-buy-bar__title">{{ product.title }}</p>
+        <p class="sticky-buy-bar__price">{{ product.price | money }}</p>
+      </div>
+    </div>
+
+    <button type="button" class="sticky-buy-bar__btn" id="sticky-atc-btn"
+      {%- unless product.selected_or_first_available_variant.available %} disabled{%- endunless -%}>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      {%- if product.selected_or_first_available_variant.available -%}
+        Add to cart
+      {%- else -%}
+        Sold out
+      {%- endif -%}
+    </button>
+  </div>
+</div>
+
+<div class="product-page">
+  <div class="container">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span class="breadcrumb__sep">/</span>
+      <a href="{{ routes.all_products_collection_url }}">Products</a>
+      <span class="breadcrumb__sep">/</span>
+      <span>{{ product.title }}</span>
+    </nav>
+
+    <div class="product-layout">
+
+      <!-- Left: thumbnail strip + main image -->
+      <div class="product-media">
+        <div class="product-thumbnails">
+          {%- for image in product.images -%}
+            <button class="product-thumb{% if forloop.first %} is-active{% endif %}"
+                    data-src="{{ image | image_url: width: 900 }}"
+                    aria-label="{{ image.alt | escape | default: product.title }}">
+              <img src="{{ image | image_url: width: 120 }}" alt="{{ image.alt | escape }}" width="120" height="120" loading="lazy">
+            </button>
+          {%- else -%}
+            {%- for i in (1..4) -%}
+              <button class="product-thumb{% if forloop.first %} is-active{% endif %}"
+                      data-src="https://picsum.photos/seed/prod{{ i }}/900/900">
+                <img src="https://picsum.photos/seed/prod{{ i }}/120/120" alt="Product image {{ i }}" width="120" height="120" loading="lazy">
+              </button>
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+
+        <div class="product-main-image">
+          {%- if product.featured_image -%}
+            <img id="product-main-img"
+                 src="{{ product.featured_image | image_url: width: 900 }}"
+                 alt="{{ product.featured_image.alt | escape }}"
+                 width="900" loading="eager">
+          {%- else -%}
+            <img id="product-main-img"
+                 src="https://picsum.photos/seed/prod1/900/900"
+                 alt="{{ product.title }}"
+                 width="900" loading="eager">
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Right: product info -->
+      <div class="product-info">
+        {%- if product.tags contains 'New' or product.tags contains 'new' -%}
+          <span class="product-badge">New</span>
+        {%- endif -%}
+
+        {%- if product.vendor != blank -%}
+          <p class="product-vendor">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="product-title">{{ product.title }}</h1>
+        <hr class="product-divider">
+
+        <p class="product-price">
+          {%- if product.price_varies -%}
+            From {{ product.price_min | money }}
+          {%- else -%}
+            {{ product.price | money }}
+          {%- endif -%}
+        </p>
+
+        {%- if product.description != blank -%}
+          <div class="product-description rte">{{ product.description }}</div>
+        {%- endif -%}
+
+        {%- form 'product', product -%}
+          <input type="hidden" name="id" id="variant-id" value="{{ product.selected_or_first_available_variant.id }}">
+
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <div class="product-option">
+                <p class="option-label">{{ option.name | upcase }}</p>
+
+                {%- assign opt_name = option.name | downcase -%}
+                {%- if opt_name == 'color' or opt_name == 'colour' -%}
+                  <div class="color-swatches">
+                    {%- for value in option.values -%}
+                      <button type="button"
+                              class="color-swatch{% if option.selected_value == value %} is-active{% endif %}"
+                              data-option="{{ option.position }}"
+                              data-value="{{ value }}"
+                              style="background-color: {{ value | downcase | replace: ' ', '' }};"
+                              title="{{ value }}"
+                              aria-label="{{ value }}"></button>
+                    {%- endfor -%}
+                  </div>
+                {%- else -%}
+                  <div class="option-values">
+                    {%- for value in option.values -%}
+                      <button type="button"
+                              class="option-btn{% if option.selected_value == value %} is-active{% endif %}"
+                              data-option="{{ option.position }}"
+                              data-value="{{ value }}">{{ value }}</button>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <div class="product-option">
+            <p class="option-label">QTY</p>
+            <div class="qty-selector">
+              <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">&#8722;</button>
+              <input class="qty-input" type="number" name="quantity" value="1" min="1" readonly>
+              <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">&#43;</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-add-to-cart"
+            {%- unless product.selected_or_first_available_variant.available %} disabled{%- endunless -%}>
+            {%- if product.selected_or_first_available_variant.available -%}
+              ADD TO CART
+            {%- else -%}
+              SOLD OUT
+            {%- endif -%}
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product"
+}
+{% endschema %}

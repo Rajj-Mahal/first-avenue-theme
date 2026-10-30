@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "main": {
+      "type": "about-page",
+      "blocks": {
+        "owner-section": {
+          "type": "image_text",
+          "settings": {
+            "image_position": "left",
+            "eyebrow": "Meet the Maker",
+            "heading": "Started in a small workshop.",
+            "body": "<p>We began building mirrors and frames because we couldn't find pieces made to last. Every order is still cut, joined, and finished by hand, one batch at a time.</p>"
+          }
+        },
+        "business-section": {
+          "type": "image_text",
+          "settings": {
+            "image_position": "right",
+            "eyebrow": "Our Craft",
+            "heading": "Solid materials, considered proportions.",
+            "body": "<p>Solid wood, true glass, and brass hardware — no veneer, no shortcuts. We design each piece to hold up in daily use and still feel right in a decade.</p>"
+          }
+        }
+      },
+      "block_order": ["owner-section", "business-section"],
+      "settings": {
+        "eyebrow": "Our Story",
+        "heading": "Crafted to reflect",
+        "subheading": "We make mirrors and frames the slow way — solid materials, traditional joinery, finished by hand."
+      }
+    }
+  },
+  "order": ["main"]
+}

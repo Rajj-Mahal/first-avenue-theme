@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact-template",
+      "blocks": {
+        "info-email": {
+          "type": "info",
+          "settings": {
+            "icon": "email",
+            "label": "Email Us",
+            "value": "hello@yourstore.com"
+          }
+        },
+        "info-phone": {
+          "type": "info",
+          "settings": {
+            "icon": "phone",
+            "label": "Call Us",
+            "value": "(555) 000-0000"
+          }
+        },
+        "info-hours": {
+          "type": "info",
+          "settings": {
+            "icon": "clock",
+            "label": "Hours",
+            "value": "Mon – Fri: 9am – 5pm\nSat – Sun: Closed"
+          }
+        }
+      },
+      "block_order": ["info-email", "info-phone", "info-hours"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

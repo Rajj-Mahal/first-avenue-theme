@@ -1,0 +1,31 @@
+{%- if section.settings.text != blank -%}
+  <div class="announcement-bar">
+    {%- if section.settings.text_mobile != blank -%}
+      <span class="announcement-bar__text announcement-bar__text--desktop">{{ section.settings.text }}</span>
+      <span class="announcement-bar__text announcement-bar__text--mobile">{{ section.settings.text_mobile }}</span>
+    {%- else -%}
+      <span class="announcement-bar__text">{{ section.settings.text }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Made by hand in New Jersey · Every frame arrives ready to hang"
+    },
+    {
+      "type": "text",
+      "id": "text_mobile",
+      "label": "Mobile text",
+      "info": "Shorter version shown on small screens. Leave blank to use the main text.",
+      "default": "Made by hand in New Jersey"
+    }
+  ]
+}
+{% endschema %}

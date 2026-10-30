@@ -1,0 +1,86 @@
+<section class="about-split section">
+  <div class="container">
+    <div class="about-split__inner">
+      <div class="about-split__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="about-split__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="about-split__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+          <p class="about-split__text">{{ section.settings.text }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <div>
+            <a href="{{ section.settings.button_url | default: '#' }}" class="btn btn--dark">
+              {{ section.settings.button_label }}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="about-split__image">
+        {%- if section.settings.image -%}
+          <img src="{{ section.settings.image | image_url: width: 900 }}"
+               alt="{{ section.settings.image.alt | escape }}"
+               width="900" loading="lazy">
+        {%- else -%}
+          <img src="https://picsum.photos/seed/atelier-workshop/900/700"
+               alt="About image placeholder"
+               width="900" height="700" loading="lazy">
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About split",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Our Craft"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Made by hand, built to last"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Body text",
+      "default": "Every mirror and frame is cut, joined, and finished in small batches. We favor solid wood and true glass over shortcuts — pieces meant to be passed down, not replaced."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About split"
+    }
+  ]
+}
+{% endschema %}

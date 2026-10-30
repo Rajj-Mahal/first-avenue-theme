@@ -1,0 +1,82 @@
+<section class="section">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+      <div class="section__header">
+        <h2 class="section__title">{{ section.settings.title }}</h2>
+      </div>
+    {%- endif -%}
+
+    {%- assign collection = collections[section.settings.collection] -%}
+    {%- if collection != blank and collection.products.size > 0 -%}
+      <div class="product-grid">
+        {%- for product in collection.products limit: section.settings.products_to_show -%}
+          {% render 'card-product', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <!-- Placeholder products shown until a collection is selected -->
+      <div class="product-grid">
+        {%- assign placeholder_names = "Arched Floor Mirror,Oak Gallery Frame,Round Brass Mirror,Walnut Picture Frame" | split: "," -%}
+        {%- assign placeholder_prices = "$249.00,$68.00,$189.00,$54.00" | split: "," -%}
+        {%- assign placeholder_seeds = "archedmirror,oakframe,brassmirror,walnutframe" | split: "," -%}
+        {%- for name in placeholder_names -%}
+          {%- assign idx = forloop.index0 -%}
+          <a href="#" class="card-product">
+            <div class="card-product__image">
+              <img src="https://picsum.photos/seed/{{ placeholder_seeds[idx] }}/500/500"
+                   alt="{{ name }}"
+                   width="500" height="500" loading="lazy">
+            </div>
+            <p class="card-product__title">{{ name }}</p>
+            <p class="card-product__price">{{ placeholder_prices[idx] }}</p>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_view_all -%}
+      <div style="text-align:center; margin-top:2.5rem;">
+        <a href="{{ collection.url | default: routes.all_products_collection_url }}" class="btn btn--outline">View all</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop Mirrors & Frames"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,73 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Custom framing since 1996",
+        "title": "Preserving what",
+        "title_accent": "remains human.",
+        "subtitle": "Hand-built frames and mirrors for the moments you can’t replace — designed with you, finished in our shop, delivered ready to hang.",
+        "button_label": "Explore",
+        "link_label": "View the gallery",
+        "interval": 2.5
+      },
+      "blocks": {
+        "occasion-birthdays": { "type": "occasion", "settings": { "occasion": "Birthdays" } },
+        "occasion-weddings": { "type": "occasion", "settings": { "occasion": "Weddings" } },
+        "occasion-anniversaries": { "type": "occasion", "settings": { "occasion": "Anniversaries" } },
+        "occasion-graduations": { "type": "occasion", "settings": { "occasion": "Graduations" } }
+      },
+      "block_order": [
+        "occasion-birthdays",
+        "occasion-weddings",
+        "occasion-anniversaries",
+        "occasion-graduations"
+      ]
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Shop Mirrors & Frames",
+        "products_to_show": 4,
+        "show_view_all": false
+      }
+    },
+    "trust-badges": {
+      "type": "trust-badges",
+      "settings": {
+        "badge1_title": "White-Glove Shipping",
+        "badge1_text": "Free on all mirrors and frames",
+        "badge2_title": "Lifetime Warranty",
+        "badge2_text": "Guaranteed craftsmanship",
+        "badge3_title": "Secure Checkout",
+        "badge3_text": "Shop with confidence",
+        "badge4_title": "Expert Craftsmanship",
+        "badge4_text": "Hand-finished, made to order"
+      }
+    },
+    "about-split": {
+      "type": "about-split",
+      "settings": {
+        "eyebrow": "Our Craft",
+        "title": "Made by hand, built to last",
+        "text": "Every mirror and frame is cut, joined, and finished in small batches. We favor solid wood and true glass over shortcuts — pieces meant to be passed down, not replaced.",
+        "button_label": "Learn More"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "title": "Join the Collection",
+        "text": "New designs, restocks, and studio notes — delivered occasionally, never crowded.",
+        "button_label": "Subscribe"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured-collection",
+    "trust-badges",
+    "about-split",
+    "newsletter"
+  ]
+}

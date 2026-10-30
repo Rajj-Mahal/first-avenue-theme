@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ page_description | escape }}">
+
+  <title>
+    {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}
+    {% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
+    {% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {% endif %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+
+  {{ content_for_header }}
+
+  {% style %}
+    :root {
+      --ivory: {{ settings.color_ivory }};
+      --white: {{ settings.color_white }};
+      --charcoal: {{ settings.color_charcoal }};
+      --stone: {{ settings.color_stone }};
+      --bronze: {{ settings.color_bronze }};
+      --border: {{ settings.color_border }};
+      --crimson: {{ settings.color_crimson }};
+      --deep-navy: {{ settings.color_deep_navy }};
+    }
+  {% endstyle %}
+
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+</head>
+<body>
+
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+
+  <main id="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'footer' %}
+
+  <script src="{{ 'base.js' | asset_url }}" defer></script>
+</body>
+</html>

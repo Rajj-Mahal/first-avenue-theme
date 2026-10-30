@@ -1,0 +1,141 @@
+{%- paginate collection.products by 16 -%}
+<section class="collection-page">
+  <div class="container">
+
+    <h1 class="collection-page__title">{{ collection.title }}</h1>
+
+    {%- if collection.description != blank -%}
+      <div class="collection-description rte">{{ collection.description }}</div>
+    {%- endif -%}
+
+    <div class="collection-toolbar">
+      <div class="collection-filters">
+        {%- for filter in collection.filters -%}
+          <div class="filter-dropdown">
+            <button type="button"
+                    class="filter-pill{% if filter.active_values.size > 0 %} is-active{% endif %}"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+              {{ filter.label }}
+              {%- if filter.active_values.size > 0 -%}
+                &nbsp;({{ filter.active_values.size }})
+              {%- endif -%}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+
+            <div class="filter-panel" hidden>
+              {%- if filter.type == 'price_range' -%}
+                <form class="filter-price-form" action="{{ collection.url }}" method="get">
+                  <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+                  {%- for active_filter in collection.filters -%}
+                    {%- unless active_filter.type == 'price_range' -%}
+                      {%- for value in active_filter.active_values -%}
+                        <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
+                      {%- endfor -%}
+                    {%- endunless -%}
+                  {%- endfor -%}
+                  <div class="filter-price-inputs">
+                    <div class="filter-price-group">
+                      <label for="price-min-{{ section.id }}">Min</label>
+                      <div class="filter-price-input-wrap">
+                        <span class="filter-price-symbol">$</span>
+                        <input type="number"
+                               id="price-min-{{ section.id }}"
+                               name="{{ filter.min_value.param_name }}"
+                               {%- if filter.min_value.value -%}value="{{ filter.min_value.value | divided_by: 100.0 | ceil }}"{%- endif -%}
+                               placeholder="0"
+                               min="0">
+                      </div>
+                    </div>
+                    <div class="filter-price-group">
+                      <label for="price-max-{{ section.id }}">Max</label>
+                      <div class="filter-price-input-wrap">
+                        <span class="filter-price-symbol">$</span>
+                        <input type="number"
+                               id="price-max-{{ section.id }}"
+                               name="{{ filter.max_value.param_name }}"
+                               {%- if filter.max_value.value -%}value="{{ filter.max_value.value | divided_by: 100.0 | ceil }}"{%- endif -%}
+                               placeholder="{{ filter.range_max | divided_by: 100.0 | ceil }}"
+                               min="0">
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn--outline filter-price-apply">Apply</button>
+                </form>
+              {%- else -%}
+                <ul class="filter-value-list">
+                  {%- for value in filter.values -%}
+                    <li>
+                      {%- if value.active -%}
+                        <a href="{{ value.url_to_remove }}" class="filter-value-link is-active">
+                      {%- else -%}
+                        <a href="{{ value.url_to_add }}" class="filter-value-link{% if value.count == 0 %} is-disabled{% endif %}">
+                      {%- endif -%}
+                          <span class="filter-value-check">
+                            {%- if value.active -%}
+                              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 6 5 10 11 2"/></svg>
+                            {%- endif -%}
+                          </span>
+                          <span class="filter-value-label">{{ value.label }}</span>
+                          <span class="filter-value-count">({{ value.count }})</span>
+                        </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+
+        {%- if request.query_string contains 'filter' -%}
+          <a href="{{ collection.url }}" class="filter-reset-btn">Reset Filters</a>
+        {%- endif -%}
+      </div>
+
+      <div class="collection-meta">
+        <span class="collection-count">{{ collection.products_count }} items</span>
+
+        <div class="sort-wrapper">
+          <label for="sort-by" class="visually-hidden">Sort</label>
+          <select id="sort-by" class="sort-select" onchange="window.location.href='?sort_by='+this.value">
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}"{% if collection.sort_by == option.value %} selected{% endif %}>{{ option.name }}</option>
+            {%- endfor -%}
+          </select>
+          <svg class="sort-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+
+        <div class="grid-toggle">
+          <button class="grid-btn is-active" data-grid="4" aria-label="4-column grid">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </button>
+          <button class="grid-btn" data-grid="dense" aria-label="Dense grid">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="4" height="4" rx="0.5"/><rect x="8" y="2" width="4" height="4" rx="0.5"/><rect x="14" y="2" width="4" height="4" rx="0.5"/><rect x="20" y="2" width="2" height="4" rx="0.5"/><rect x="2" y="8" width="4" height="4" rx="0.5"/><rect x="8" y="8" width="4" height="4" rx="0.5"/><rect x="14" y="8" width="4" height="4" rx="0.5"/><rect x="20" y="8" width="2" height="4" rx="0.5"/><rect x="2" y="14" width="4" height="4" rx="0.5"/><rect x="8" y="14" width="4" height="4" rx="0.5"/><rect x="14" y="14" width="4" height="4" rx="0.5"/><rect x="20" y="14" width="2" height="4" rx="0.5"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {%- if collection.products.size > 0 -%}
+      <div class="product-grid" id="product-grid">
+        {%- for product in collection.products -%}
+          {% render 'card-product', product: product %}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <div class="pagination">{{ paginate | default_pagination }}</div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="collection-empty">{{ 'collections.general.no_matches' | t }}</p>
+    {%- endif -%}
+
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection"
+}
+{% endschema %}

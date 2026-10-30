@@ -1,0 +1,54 @@
+{%- assign on_sale = false -%}
+{%- if product.compare_at_price > product.price -%}
+  {%- assign on_sale = true -%}
+{%- endif -%}
+
+<div class="card-product">
+  <a href="{{ product.url }}" class="card-product__media" tabindex="-1" aria-hidden="true">
+    {%- if product.featured_image -%}
+      <img class="card-product__img card-product__img--primary"
+           src="{{ product.featured_image | image_url: width: 600 }}"
+           alt="{{ product.featured_image.alt | escape }}"
+           width="600" loading="lazy">
+      {%- if product.images[1] -%}
+        <img class="card-product__img card-product__img--secondary"
+             src="{{ product.images[1] | image_url: width: 600 }}"
+             alt="{{ product.images[1].alt | escape }}"
+             width="600" loading="lazy">
+      {%- endif -%}
+    {%- else -%}
+      <img class="card-product__img card-product__img--primary"
+           src="https://picsum.photos/seed/{{ product.handle }}/600/600"
+           alt="{{ product.title | escape }}"
+           width="600" loading="lazy">
+    {%- endif -%}
+
+    {%- if on_sale -%}
+      <span class="card-product__badge">Sale</span>
+    {%- endif -%}
+
+    <button class="card-product__quick-add"
+            aria-label="Quick add {{ product.title | escape }}"
+            data-product-url="{{ product.url }}">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+    </button>
+  </a>
+
+  <div class="card-product__info">
+    <a href="{{ product.url }}" class="card-product__title">{{ product.title }}</a>
+    <p class="card-product__price">
+      {%- if on_sale -%}
+        <span class="price--sale">{{ product.price | money }}</span>
+        <s class="price--compare">{{ product.compare_at_price | money }}</s>
+      {%- elsif product.price_varies -%}
+        <span>From {{ product.price_min | money }}</span>
+      {%- else -%}
+        <span>{{ product.price | money }}</span>
+      {%- endif -%}
+    </p>
+  </div>
+</div>
